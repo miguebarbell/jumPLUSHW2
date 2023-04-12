@@ -1,5 +1,6 @@
 package controllers;
 
+import helper.MenuParser;
 import helper.Validators;
 import models.Movie;
 import models.User;
@@ -21,13 +22,16 @@ public class MoviesController {
 		if (movieList.isEmpty()) {
 			promptFeedback("No movies in the database");
 		} else {
-			System.out.println("Movie\t\tRating\tOpinions");
-			movieList.forEach(movie -> System.out.printf("%s. %s\t%s\t%s%n",
-					counter.getAndIncrement(),
-					movie.title(),
-					movie.count() > 0 ? String.format("%.1f", movie.rating()) : "N/A",
-					movie.count()));
-			System.out.printf("%s. Exit%n", counter.get());
+			System.out.println("""
++===============================================+
+| Movie                         Rating Opinions |""");
+			movieList.forEach(movie -> System.out.println(
+					MenuParser.fourParameter(
+							counter.getAndIncrement(),
+							movie.title(),
+							movie.count() > 0 ? String.format("%.1f", movie.rating()) : "N/A",
+							movie.count())));
+			System.out.printf("+===============================================+\n  %s. Exit%n", counter.get());
 			if (null != user && user.username().equals("admin")) {
 				System.out.println("0. Add a movie");
 			}
@@ -44,7 +48,6 @@ public class MoviesController {
 						promptError("Invalid option: %s".formatted(option));
 					}
 				}
-
 			} while (!Validators.validateNumber(option));
 		}
 	}
