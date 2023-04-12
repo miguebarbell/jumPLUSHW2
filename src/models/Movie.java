@@ -1,4 +1,3 @@
 package models;
 
-public class Movie {
-}
+public record Movie(Integer movieId,String title, Integer rating, Integer count) {}

@@ -59,4 +59,5 @@ public class Validators {
 		String pattern = "[\\w\\.-]+@[\\w\\.]+\\.[\\w]{2,5}";
 		return email.matches(pattern);
 	}
+
 }
