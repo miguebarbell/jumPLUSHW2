@@ -28,6 +28,7 @@ public class LoginController {
 			} catch (RuntimeException e) {
 				promptError("Bad Credentials");
 				promptFeedback("try again");
+				// give them 3 times to try again, then return to the mail menu
 			}
 
 			// check the password

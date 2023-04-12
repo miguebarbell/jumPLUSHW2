@@ -1,3 +1,3 @@
 package models;
 
-public record Movie(Integer movieId,String title, Integer rating, Integer count) {}
+public record Movie(Integer movieId, String title, float rating, Integer count) {}

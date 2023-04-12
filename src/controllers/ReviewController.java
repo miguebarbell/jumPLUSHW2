@@ -14,7 +14,7 @@ public class ReviewController {
 	public static void reviewMenu(User user, Movie movie, Scanner scanner) {
 		boolean undone = true;
 		do {
-			promptHeader("%s Leave a review for %s".formatted(user.username(), movie.title()));
+			promptHeader("%s Leave a review for %s".formatted(null == user ? "Guest" : user.username(), movie.title()));
 			promptOptions("""
 					Rating:
 					0. Really Bad

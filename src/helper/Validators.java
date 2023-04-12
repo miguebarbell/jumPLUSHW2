@@ -60,4 +60,14 @@ public class Validators {
 		return email.matches(pattern);
 	}
 
+	public static boolean validateNumber(String number) {
+		try {
+			Integer.parseInt(number);
+			return true;
+		} catch (NumberFormatException e) {
+//			Prompt.promptError("Not a valid number");
+			return false;
+		}
+	}
+
 }

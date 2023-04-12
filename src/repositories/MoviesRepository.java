@@ -21,7 +21,7 @@ public class MoviesRepository {
 
 	static public boolean save(String title) {
 		String createTable = "Create table IF NOT EXISTS movies (ID int primary key AUTO_INCREMENT, title varchar(255) not null " +
-		                     "unique, rating INT default null, count INT default 0)";
+		                     "unique, rating FLOAT default null, count INT default 0)";
 		try (Statement statement = connection.createStatement()) {
 			statement.execute(createTable);
 			PreparedStatement preparedMovieStatement =
@@ -42,15 +42,19 @@ public class MoviesRepository {
 	}
 
 	static public List<Movie> getMovieList() {
+
+		String createTable = "Create table IF NOT EXISTS movies (ID int primary key AUTO_INCREMENT, title varchar(255) not null " +
+		                     "unique, rating FLOAT default null, count INT default 0)";
 		String getAllMoviesStatement = "select * from movies";
 		List<Movie> result = new ArrayList<>();
 		try (Statement statement = connection.createStatement()) {
+			statement.execute(createTable);
 			ResultSet resultSet = statement.executeQuery(getAllMoviesStatement);
 			while (resultSet.next()) {
 				result.add(new Movie(
 						resultSet.getInt(1),
 						resultSet.getString(2),
-						resultSet.getInt(3),
+						resultSet.getFloat(3),
 						resultSet.getInt(4)));
 			}
 		} catch (SQLException e) {
@@ -61,10 +65,10 @@ public class MoviesRepository {
 
 	static public boolean leaveRatingFor(Movie movie, Integer rating) {
 		// not needed to look and retrieve the movie because we already know the values
-		int newRating = (movie.rating() + rating) / (movie.count() + 1);
+		float newRating = (movie.rating() + rating) / (movie.count() + 1);
 		String getMovieStatement = "UPDATE movies SET rating = ?, count = ? WHERE ID = ?";
 		try (PreparedStatement statement = connection.prepareStatement(getMovieStatement)) {
-			statement.setInt(1, newRating);
+			statement.setFloat(1, newRating);
 			statement.setInt(2, movie.count() + 1);
 			statement.setInt(3, movie.movieId());
 			int rows = statement.executeUpdate();
