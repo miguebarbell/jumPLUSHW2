@@ -1,3 +1,3 @@
 package models;
 
-public record User(Integer userId, String username, String password) {}
+public record User(Integer userId, String username, String password, Boolean isAdmin) {}

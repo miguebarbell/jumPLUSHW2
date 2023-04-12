@@ -23,7 +23,8 @@ public class UserRepository {
 
 	static public boolean save(UserDTO user) {
 		String createTable =
-				"Create table if not exists users (ID int primary key auto_increment, email varchar(250) unique , password varchar(250))";
+				"Create table if not exists users (ID int primary key auto_increment, email varchar(250) unique , password " +
+				"varchar(250), is_admin boolean default false)";
 		try (Statement statement = connection.createStatement()) {
 			statement.execute(createTable);
 			PreparedStatement preparedUserStatement =
@@ -47,7 +48,10 @@ public class UserRepository {
 		try (PreparedStatement statement = connection.prepareStatement(getUserByEmailStatement)) {
 			ResultSet resultSet = statement.executeQuery();
 			if (resultSet.next()) {
-				return new User(resultSet.getInt(1),resultSet.getString(2), resultSet.getString(3));
+				return new User(resultSet.getInt(1),
+						resultSet.getString(2),
+						resultSet.getString(3),
+						resultSet.getBoolean(4));
 			} else {
 				throw new RuntimeException("Could not find user");
 			}

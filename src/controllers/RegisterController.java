@@ -52,7 +52,5 @@ public class RegisterController {
 		} while (!rePassword.equals(password));
 		boolean isSaved = UserRepository.save(new UserDTO(email, Hasher.hasher(password)));
 
-//		System.out.println("isSaved = " + isSaved);
-
 	}
 }

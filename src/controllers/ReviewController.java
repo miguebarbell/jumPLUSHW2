@@ -28,9 +28,10 @@ public class ReviewController {
 									""");
 			prompt("Your review?");
 			String option = scanner.nextLine();
-			if (Arrays.asList("0", "1", "2", "3", "4").contains(option)) {
+			if (Arrays.asList("0", "1", "2", "3", "4", "5").contains(option)) {
 				undone = !MoviesRepository.leaveRatingFor(movie, Integer.parseInt(option));
 				promptFeedback("Thanks for reviewing %s".formatted(movie.title()));
+				MoviesController.moviesMenu(user,scanner);
 			} else if (option.equals("6")) {
 				break;
 			} else {
