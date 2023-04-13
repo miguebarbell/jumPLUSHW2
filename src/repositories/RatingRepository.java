@@ -25,7 +25,6 @@ public class RatingRepository {
 	}
 
 	public static Rating getRating(User user, Movie movie) {
-		// search for the matching user and movie
 		String getRatingStatement = "SELECT * from rating where user_id = ? and movie_id = ?";
 		if (null == user) return null;
 		try (PreparedStatement preparedStatement = connection.prepareStatement(getRatingStatement)) {
@@ -41,7 +40,6 @@ public class RatingRepository {
 				);
 			} else return null;
 		} catch (SQLException e) {
-//			throw new RuntimeException(e);
 			return null;
 		}
 	}

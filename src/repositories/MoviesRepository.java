@@ -57,7 +57,6 @@ public class MoviesRepository {
 		Rating previousRating = RatingRepository.getRating(user, movie);
 		if (null != previousRating) {
 			RatingRepository.updateRating(previousRating.ratingId(), rating);
-			// also update the rating of the movie with this new value
 		} else if (null != user) {
 			RatingRepository.createRating(user, movie, rating);
 		}
@@ -65,13 +64,8 @@ public class MoviesRepository {
 		try (PreparedStatement statement = connection.prepareStatement(getMovieStatement)) {
 			float newRating;
 			if (null != previousRating) {
-				System.out.println("movie.rating() = " + movie.rating());
-				System.out.println("movie.count() = " + movie.count());
-				System.out.println("previousRating.rating() = " + previousRating.rating());
-				System.out.println("rating = " + rating);
 				newRating = (movie.rating() * movie.count()) - previousRating.rating() + rating;
 				newRating /= movie.count();
-				System.out.println("newRating = " + newRating);
 				statement.setInt(2, movie.count());
 			} else {
 				newRating = (movie.rating() * movie.count() + rating) / (movie.count() + 1);

@@ -21,17 +21,13 @@ public class LoginController {
 			email = scanner.nextLine();
 			prompt("password:");
 			password = scanner.nextLine();
-			// check if the email exists and retrive the user
 			try {
 				userByEmail = UserRepository.getUserByEmail(email);
 				if (!Hasher.compare(password, userByEmail.password())) throw new RuntimeException();
 			} catch (RuntimeException e) {
 				promptError("Bad Credentials");
 				promptFeedback("try again");
-				// give them 3 times to try again, then return to the mail menu
 			}
-
-			// check the password
 		} while (null == userByEmail || !Hasher.compare(userByEmail.password(), password));
 		user = userByEmail;
 		promptFeedback("successfully logged as %s".formatted(userByEmail.username()));
