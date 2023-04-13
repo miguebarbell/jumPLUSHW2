@@ -14,7 +14,7 @@ public class MenuParser {
 		else result.setLength(indexAndTitleLength);
 		result.append(" ")
 		      .append(rating)
-		      .append(" ".repeat(6))
+		      .append(" ".repeat(count > 9 ? 5 : 6))
 		      .append(count)
 		      .append(" ".repeat(5))
 		      .append('|');

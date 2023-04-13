@@ -2,6 +2,7 @@ package controllers;
 
 import models.User;
 import repositories.MoviesRepository;
+import repositories.RatingRepository;
 import repositories.UserRepository;
 
 import java.sql.Connection;
@@ -18,6 +19,7 @@ public class MenuController {
 	public MenuController(Connection connection) {
 		UserRepository.setConnection(connection);
 		MoviesRepository.setConnection(connection);
+		RatingRepository.setConnection(connection);
 		mainMenu();
 	}
 

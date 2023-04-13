@@ -24,18 +24,18 @@ public class MoviesController {
 		if (movieList.isEmpty() && (null == user || !user.isAdmin())) {
 			promptFeedback("No movies in the database");
 		} else {
-			System.out.println("""
+			promptHeader("""
 					+===============================================+
 					| Movie                         Rating Opinions |""");
-			movieList.forEach(movie -> System.out.println(
+			movieList.forEach(movie -> promptHeader(
 					MenuParser.fourParameter(
 							counter.getAndIncrement(),
 							movie.title(),
 							movie.count() > 0 ? String.format("%.1f", movie.rating()) : "N/A",
 							movie.count())));
-			System.out.printf("+===============================================+\n  %s. Exit%n", counter.get());
+			promptHeader("+===============================================+\n  %s. Exit".formatted(counter.get()));
 			if (null != user && user.isAdmin()) {
-				System.out.println("  0. Add a movie");
+				promptOptions("  0. Add a movie");
 			}
 			String option;
 			do {

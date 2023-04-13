@@ -1,24 +1,19 @@
 package repositories;
 
 import models.Movie;
+import models.Rating;
+import models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MoviesRepository {
-
-	private static final UserRepository instance = null;
-	private static int currentId = 1;
 	private static Connection connection;
-
-	private MoviesRepository() {
-	}
-
+	private MoviesRepository() {}
 	public static void setConnection(Connection connection) {
 		MoviesRepository.connection = connection;
 	}
-
 	static public boolean save(String title) {
 		String createTable = "Create table IF NOT EXISTS movies (ID int primary key AUTO_INCREMENT, title varchar(255) not null " +
 		                     "unique, rating FLOAT default null, count INT default 0)";
@@ -27,15 +22,10 @@ public class MoviesRepository {
 			PreparedStatement preparedMovieStatement =
 					connection
 							.prepareStatement("insert into movies (title) values (?)");
-
-//			preparedMovieStatement.setInt(1, currentId);
 			preparedMovieStatement.setString(1, title);
-//			preparedMovieStatement.setInt(2, null);
-//			preparedMovieStatement.setInt(3, 0);
 			int rows = preparedMovieStatement.executeUpdate();
 			System.out.println("rows = " + rows);
 			return true;
-//			return preparedUserStatement.execute();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -63,21 +53,41 @@ public class MoviesRepository {
 		return result;
 	}
 
-	static public boolean leaveRatingFor(Movie movie, Integer rating) {
-		// not needed to look and retrieve the movie because we already know the values
-		float newRating = (movie.rating() + rating) / (movie.count() + 1);
+	static public boolean leaveRatingFor(User user, Movie movie, Integer rating) {
+		Rating previousRating = RatingRepository.getRating(user, movie);
+		if (null != previousRating) {
+			RatingRepository.updateRating(previousRating.ratingId(), rating);
+			// also update the rating of the movie with this new value
+		} else if (null != user) {
+			RatingRepository.createRating(user, movie, rating);
+		}
 		String getMovieStatement = "UPDATE movies SET rating = ?, count = ? WHERE ID = ?";
 		try (PreparedStatement statement = connection.prepareStatement(getMovieStatement)) {
+			float newRating;
+			if (null != previousRating) {
+				System.out.println("movie.rating() = " + movie.rating());
+				System.out.println("movie.count() = " + movie.count());
+				System.out.println("previousRating.rating() = " + previousRating.rating());
+				System.out.println("rating = " + rating);
+				newRating = (movie.rating() * movie.count()) - previousRating.rating() + rating;
+				newRating /= movie.count();
+				System.out.println("newRating = " + newRating);
+				statement.setInt(2, movie.count());
+			} else {
+				newRating = (movie.rating() * movie.count() + rating) / (movie.count() + 1);
+				statement.setInt(2, movie.count() + 1);
+			}
 			statement.setFloat(1, newRating);
-			statement.setInt(2, movie.count() + 1);
 			statement.setInt(3, movie.movieId());
-			int rows = statement.executeUpdate();
-			System.out.println(rows + " rows affected");
+			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-//			throw new RuntimeException(e);
 			return false;
 		}
+	}
+
+	static public boolean deleteMovie(Movie movie) {
+		return false;
 	}
 
 

@@ -6,8 +6,8 @@ import models.UserDTO;
 import java.sql.*;
 
 public class UserRepository {
-	private static final UserRepository instance = null;
-	private static int currentId = 1;
+//	private static final UserRepository instance = null;
+//	private static int currentId = 1;
 	private static Connection connection;
 
 	private UserRepository() {
@@ -17,9 +17,9 @@ public class UserRepository {
 		UserRepository.connection = connection;
 	}
 
-	static public UserRepository getInstance() {
-		return instance;
-	}
+//	static public UserRepository getInstance() {
+//		return instance;
+//	}
 
 	static public boolean save(UserDTO user) {
 		String createTable =
@@ -28,8 +28,7 @@ public class UserRepository {
 		try (Statement statement = connection.createStatement()) {
 			statement.execute(createTable);
 			PreparedStatement preparedUserStatement =
-					connection
-							.prepareStatement("insert into users (email, password) values (?, ?)");
+					connection.prepareStatement("insert into users (email, password) values (?, ?)");
 
 //			preparedUserStatement.setInt(1, currentId);
 			preparedUserStatement.setString(1, user.username());
