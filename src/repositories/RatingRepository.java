@@ -64,4 +64,8 @@ public class RatingRepository {
 			throw new RuntimeException(e);
 		}
 	}
+	public static void deleteRatingForUserInMovie(User user, Movie movie){}
+	public static void deleteRatingForMovie(Movie movie) {
+
+	}
 }
