@@ -9,7 +9,7 @@ public class Main {
 		String jdbcURL = "jdbc:h2:./movies;AUTO_SERVER=true";
 		try (Connection connection = DriverManager.getConnection(jdbcURL, "sa", "")) {
 			Class.forName("org.h2.Driver");
-			System.out.println("Connected to H2 database.");
+			System.out.println("Connected to database.");
 			new MenuController(connection);
 		} catch (SQLException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
